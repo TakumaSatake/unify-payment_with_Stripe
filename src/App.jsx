@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-import CheckoutForm from "./CheckoutForm";
+import CheckoutForm from "./components/home/CheckoutForm";
+import Tab from "./components/home/Tab";
+
 import "./App.css";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -34,11 +36,21 @@ export default function App() {
 
   return (
     <div className="App">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-      )}
+      <header className="header">
+        <div className="title-container">
+          <h1 className="title">Unify Payment</h1>
+        </div>
+      </header>
+      <main className="main">
+        {clientSecret && (
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm />
+          </Elements>
+        )}
+      </main>
+      <footer className="footer">
+        <Tab />
+      </footer>
     </div>
   );
 }

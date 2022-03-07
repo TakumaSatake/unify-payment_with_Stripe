@@ -28,16 +28,16 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case "succeeded":
-          setMessage("Payment succeeded!");
+          setMessage("お支払いが完了しました!");
           break;
         case "processing":
-          setMessage("Your payment is processing.");
+          setMessage("処理中です");
           break;
         case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
+          setMessage("お支払いができませんでした　もう一度試してください");
           break;
         default:
-          setMessage("Something went wrong.");
+          setMessage("問題が発生しました");
           break;
       }
     });
@@ -81,7 +81,7 @@ export default function CheckoutForm() {
       <PaymentElement id="payment-element" />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner"></div> : "お支払い"}
         </span>
       </button>
       {/* Show any error or success messages */}
