@@ -4,6 +4,14 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import PaymentForm from './PaymentForm';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -82,11 +90,16 @@ export default function CheckoutForm() {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "お支払い"}
-        </span>
-      </button>
+      <Router>
+        <button disabled={isLoading || !stripe || !elements} id="submit">
+          <span id="button-text">
+            {isLoading ? <div className="spinner" id="spinner"></div> : "お支払い"}
+          </span>
+          <Routes>
+            <Route path="./PaymentFrom" element={<PaymentForm />} />
+          </Routes>
+        </button>
+      </Router>
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
     </form>

@@ -9,6 +9,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-modal": "^3.14.4",
+    "react-router-dom": "^6.2.2",
     "react-scripts": "^3.4.4",
     "stripe": "^8.202.0"
   },
