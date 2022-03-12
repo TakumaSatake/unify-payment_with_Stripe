@@ -16,7 +16,8 @@ const calculateOrderAmount = (items) => {
 app.post("/create-payment-intent", async (req, res) => {
   const { items } = req.body;
 
-  // Create a PaymentIntent with the order amount and currency
+  // 顧客の支払いライフサイクルを追跡し、支払いの試行失敗があった場合にはその記録を残して
+  // 顧客への請求に重複が発生しないようにする。
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "eur",

@@ -7,16 +7,14 @@ import Tab from "./components/home/Tab";
 
 import "./App.css";
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
+// Stripe.jsの読み込み
 const stripePromise = loadStripe("pk_test_51KZDPoANuuL1gmXwKF9ZcF2LxtZBENW0PGr8aZ25dbI6qTF0IMOeP6vcztbJ9ZWCBk7sroEumeIJAhjtocgAHQPj00sTWM0lEm");
 
 export default function App() {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
+    // チェックアウトページが読み込まれたらPaymentIntentを生成する
     fetch("/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

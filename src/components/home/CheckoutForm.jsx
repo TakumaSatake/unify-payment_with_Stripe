@@ -12,36 +12,36 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!stripe) {
+  //     return;
+  //   }
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
+  //   const clientSecret = new URLSearchParams(window.location.search).get(
+  //     "payment_intent_client_secret"
+  //   );
 
-    if (!clientSecret) {
-      return;
-    }
+  //   if (!clientSecret) {
+  //     return;
+  //   }
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("お支払いが完了しました!");
-          break;
-        case "processing":
-          setMessage("処理中です");
-          break;
-        case "requires_payment_method":
-          setMessage("お支払いができませんでした　もう一度試してください");
-          break;
-        default:
-          setMessage("問題が発生しました");
-          break;
-      }
-    });
-  }, [stripe]);
+  //   stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+  //     switch (paymentIntent.status) {
+  //       case "succeeded":
+  //         setMessage("お支払いが完了しました!");
+  //         break;
+  //       case "processing":
+  //         setMessage("少し待っててください");
+  //         break;
+  //       case "requires_payment_method":
+  //         setMessage("ごめんなさい、お支払いできませんでした...　もう一度試してみてください");
+  //         break;
+  //       default:
+  //         setMessage("問題が発生しました");
+  //         break;
+  //     }
+  //   });
+  // }, [stripe]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,19 +54,21 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
+    // 支払い完了後にStripeがユーザーをリダイレクトする場所を渡す。
+    // 認証が必要な支払いの場合、
+    // Stripe は 3D セキュア認証のためのモーダルを表示するか、
+    // 支払い方法に応じて顧客を認証ページにリダイレクトする。
+    // 認証プロセス完了後、return_urlへリダイレクトされる
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: "http://localhost:3000/",
       },
     });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
+    // 即時エラーの処理
+    // カード情報等が拒否された時などに、エラーを返す
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);
     } else {
@@ -74,6 +76,7 @@ export default function CheckoutForm() {
     }
 
     setIsLoading(false);
+
   };
 
   return (
@@ -88,4 +91,5 @@ export default function CheckoutForm() {
       {message && <div id="payment-message">{message}</div>}
     </form>
   );
+
 }
