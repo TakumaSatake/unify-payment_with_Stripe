@@ -1,12 +1,25 @@
-import React from 'react';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 
-const PaymentForm = () => {
+import CheckoutForm from "./CheckoutForm";
+import SelectPayment from './SelectPayment';
+
+export default function PaymentForm() {
+
   return (
-    <div className="paymentForm">
-      どの決済サービスを使いますか？
-      お店で使える決済サービスを選んでください。
-    </div>
-  );
-};
+    <Router>
+        <form id="payment-form">
+          <Routes>
+            <Route path="/checkout" element={<CheckoutForm />} />
+            <Route path="/selectPayment" element={<SelectPayment />} />
+          </Routes>
+        </form>
 
-export default PaymentForm;
+    </Router> 
+  );
+
+}

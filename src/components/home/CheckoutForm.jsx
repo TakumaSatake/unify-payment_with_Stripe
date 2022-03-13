@@ -4,52 +4,48 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import PaymentForm from './PaymentForm';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
-
+  
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (!stripe) {
-  //     return;
-  //   }
+  const navigate = useNavigate();
 
-  //   const clientSecret = new URLSearchParams(window.location.search).get(
-  //     "payment_intent_client_secret"
-  //   );
+  useEffect(() => {
+    if (!stripe) {
+      return;
+    }
 
-  //   if (!clientSecret) {
-  //     return;
-  //   }
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment_intent_client_secret"
+    );
 
-  //   stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-  //     switch (paymentIntent.status) {
-  //       case "succeeded":
-  //         setMessage("お支払いが完了しました!");
-  //         break;
-  //       case "processing":
-  //         setMessage("少し待っててください");
-  //         break;
-  //       case "requires_payment_method":
-  //         setMessage("ごめんなさい、お支払いできませんでした...　もう一度試してみてください");
-  //         break;
-  //       default:
-  //         setMessage("問題が発生しました");
-  //         break;
-  //     }
-  //   });
-  // }, [stripe]);
+    if (!clientSecret) {
+      return;
+    }
+
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      switch (paymentIntent.status) {
+        case "succeeded":
+          setMessage("お支払いが完了しました!");
+          break;
+        case "processing":
+          setMessage("少し待っててください");
+          break;
+        case "requires_payment_method":
+          setMessage("ごめんなさい、お支払いできませんでした...　もう一度試してみてください");
+          break;
+        default:
+          setMessage("問題が発生しました");
+          break;
+      }
+    });
+  }, [stripe]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +58,8 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
+    navigate("http://localhost:3000/selectPayment");
+
     // 支払い完了後にStripeがユーザーをリダイレクトする場所を渡す。
     // 認証が必要な支払いの場合、
     // Stripe は 3D セキュア認証のためのモーダルを表示するか、
@@ -71,7 +69,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/",
+        return_url: "/selectPayment",
       },
     });
 
@@ -88,21 +86,16 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <div onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" />
-      <Router>
-        <button disabled={isLoading || !stripe || !elements} id="submit">
-          <span id="button-text">
-            {isLoading ? <div className="spinner" id="spinner"></div> : "お支払い"}
-          </span>
-          <Routes>
-            <Route path="./PaymentFrom" element={<PaymentForm />} />
-          </Routes>
-        </button>
-      </Router>
+      <button disabled={isLoading || !stripe || !elements} id="submit">
+        <span id="button-text">
+          {isLoading ? <div className="spinner" id="spinner"></div> : "お支払い"}
+        </span>
+      </button>
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
-    </form>
+    </div>
   );
 
 }
