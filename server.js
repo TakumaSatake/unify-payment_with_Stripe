@@ -20,7 +20,7 @@ app.post("/create-payment-intent", async (req, res) => {
   // 顧客への請求に重複が発生しないようにする。
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
-    currency: "eur",
+    currency: "jpy",
     automatic_payment_methods: {
       enabled: true,
     },

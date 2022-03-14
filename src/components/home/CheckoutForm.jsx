@@ -58,8 +58,6 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
-    navigate("http://localhost:3000/selectPayment");
-
     // 支払い完了後にStripeがユーザーをリダイレクトする場所を渡す。
     // 認証が必要な支払いの場合、
     // Stripe は 3D セキュア認証のためのモーダルを表示するか、
@@ -69,7 +67,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "/selectPayment",
+        return_url: "http://localhost:3000/",
       },
     });
 

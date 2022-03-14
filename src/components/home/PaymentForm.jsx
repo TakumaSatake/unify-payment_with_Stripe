@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 
 import CheckoutForm from "./CheckoutForm";
-import SelectPayment from './SelectPayment';
+import SelectPayment from "./SelectPayment";
+import PaymentPage from "./PaymentPage";
 
 export default function PaymentForm() {
 
@@ -15,7 +16,8 @@ export default function PaymentForm() {
         <form id="payment-form">
           <Routes>
             <Route path="/checkout" element={<CheckoutForm />} />
-            <Route path="/selectPayment" element={<SelectPayment />} />
+            <Route path="/select-payment" element={<SelectPayment />} />
+            <Route path="/payment-page" element={<PaymentPage />} />
           </Routes>
         </form>
 
