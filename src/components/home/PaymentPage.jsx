@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQRCode } from 'react-hook-qrcode';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const PaymentPage = () => {
     const navigate = useNavigate();
@@ -9,11 +9,16 @@ const PaymentPage = () => {
         text: 'https://google.com',
         options: {
             level: 'S',
-            margin: 7,
-            scale: 1,
             width: 300,
         },
     });
+
+    const location = useLocation();
+    // クエリパラメーターを取得
+    const search = location.search;
+    // 値だけ取り出す
+    const query = new URLSearchParams(search);
+  
 
     const home = () => {
         navigate('/checkout');
@@ -26,6 +31,7 @@ const PaymentPage = () => {
     return (
         <div>
             <canvas ref={inputRef} />
+            {query.get("keyword")}
             <button type="button" onClick={home}>
               ホームへ
             </button>

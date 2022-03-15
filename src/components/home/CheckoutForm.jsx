@@ -4,8 +4,6 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import { useNavigate } from 'react-router-dom';
-
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -13,8 +11,6 @@ export default function CheckoutForm() {
   
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!stripe) {

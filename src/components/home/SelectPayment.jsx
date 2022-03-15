@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { useRef }  from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
 const SelectPayment = () => {
-  const { register, formState: { errors } } = useForm();
-
+  const { register } = useForm()
   const navigate = useNavigate();
+  const payment = useRef<HTMLInputElement>("");
 
-  const move = () => {
+  const onClick = () => {
     navigate('/payment-page');
-  };
+  }
+
   const back = () => {
     navigate(-1);
   };
 
   return (
     <>
-      <p>どの決済サービスを使いますか？</p>
-      <p>お店で使える決済サービスを選んでください</p>
-      <label>
-      <select {...register("category")}>
-        <option value="">Select...</option>
-        <option value="A">Pay A</option>
-        <option value="B">Pay B</option>
+      <label htmlFor='payment'>お店で使える決済サービスを選んでください</label>
+      <select
+        {...register('payment', {
+          required: '* 決済サービスを選んでください'
+        })} 
+      >
+        <option value='' hidden>決済サービスを選択...</option>
+        <option value='payA'>Pay A</option>
+        <option value='payB'>Pay B</option>
       </select>
-      </label>
-      <button type="button" onClick={move}>
+
+      <button type="submit" onClick={onClick}>
         決定
       </button>
       <button type="button" onClick={back}>
