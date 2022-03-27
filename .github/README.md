@@ -66,9 +66,9 @@
 * ホーム画面
   * チェックアウト画面（カード情報入力）
   * ![image](https://user-images.githubusercontent.com/98210198/159113234-c3013ee1-e47a-4db8-bf0f-058a1a86b23d.png)
-  * 支払い方法（店舗導入支払い方法）の選択
+  * 支払い方法選択画面（店舗導入支払い方法）
   * ![image](https://user-images.githubusercontent.com/98210198/159113258-e9883aea-9a8f-4582-a7c5-d5c7cd499515.png)
-  * QRコード表示画面
+  * 決済画面
   * ![image](https://user-images.githubusercontent.com/98210198/159113269-c654b151-9738-4f16-8189-a036c19209bd.png)
 * 設定画面　（2022/3/16時点　未実装）
   * アカウント画面
